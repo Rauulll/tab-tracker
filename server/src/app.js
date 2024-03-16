@@ -7,11 +7,13 @@ const express = require('express')
 
 const app = express()
 app.use(morgan('combined'))
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:5173'
+}))
 app.use(bodyParser.json())
 
-app.get('/status', (_req, res) => {
-  res.send({ message: 'hello world' })
+app.post('/register', (req, res) => {
+  res.send({ message: `Hello ${req.body.email}! registered successfully` })
 })
 
 app.listen(process.env.PORT || 8801)
