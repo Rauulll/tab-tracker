@@ -6,11 +6,23 @@ const db = mysql.createConnection({
   database: config.db.database,
   user: config.db.user,
   password: config.db.password
-})
+}).promise()
 
 db.connect()
 
-const row = db.query('SELECT * FROM users')
-console.log(row)
+async function createUser (email, password) {
+  try {
+    await db.query(
+      'INSERT INTO User (email, password) VALUES (?, ?)',
+      [email, password]
+    )
+  } catch (err) {
+    const errorMessage = err.code === 'ER_DUP_ENTRY'
+      ? 'Email already exists'
+      : err.message
+    throw new Error(errorMessage)
+  }
+}
 
 module.exports = db
+module.exports = { createUser }

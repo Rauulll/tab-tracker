@@ -2,8 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   sequelize.define('User', {
     email: {
       type: DataTypes.STRING,
-      unique: true
+      allowNull: false, // Not nullable for MySQL (unlike SQLite)
+      unique: true,
+      validate: {
+        isEmail: true // Optional validation for email format
+      }
     },
-    password: DataTypes.STRING
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false // Not nullable for MySQL (unlike SQLite)
+    }
   })
 }

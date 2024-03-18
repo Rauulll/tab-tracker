@@ -1,14 +1,13 @@
-const { User } = require('../models/user')
+// const { User } = require('../models/user')
+const { createUser } = require('../models/index')
 
 module.exports = {
   async register (req, res) {
     try {
-      const user = await User.create(req.body)
-      res.send(user.toJSON())
+      await createUser(req.body.email, req.body.password)
+      res.send({ message: `Hello ${req.body.email}! registered successfully` })
     } catch (err) {
-      res.status(400).send({
-        error: 'This email is already in use'
-      })
+      res.status(400).send({ error: err.message })
     }
   }
 }
