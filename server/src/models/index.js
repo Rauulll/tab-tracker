@@ -1,5 +1,6 @@
 const config = require('../config/config')
 const mysql = require('mysql2')
+const bycrypt = require('bcryptjs')
 
 const db = mysql.createConnection({
   host: config.db.host,
@@ -11,10 +12,12 @@ const db = mysql.createConnection({
 db.connect()
 
 async function createUser (email, password) {
+  const salt = await bycrypt.genSalt(10)
+  const hashPassword = await bycrypt.hash(password, salt)
   try {
     await db.query(
       'INSERT INTO User (email, password) VALUES (?, ?)',
-      [email, password]
+      [email, hashPassword]
     )
   } catch (err) {
     const errorMessage = err.code === 'ER_DUP_ENTRY'
@@ -24,5 +27,4 @@ async function createUser (email, password) {
   }
 }
 
-module.exports = db
 module.exports = { createUser }
