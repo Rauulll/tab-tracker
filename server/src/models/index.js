@@ -12,6 +12,7 @@ const db = mysql.createConnection({
 db.connect()
 
 async function createUser (email, password) {
+  // hashing user password.
   const salt = await bycrypt.genSalt(10)
   const hashPassword = await bycrypt.hash(password, salt)
   try {
