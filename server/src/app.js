@@ -3,7 +3,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const express = require('express')
 // const { config } = require('./models')
-// const config = require('./config/config')
+const config = require('./config/config')
 // const db = require('./models/index')
 
 const app = express()
@@ -15,4 +15,4 @@ app.use(bodyParser.json())
 
 require('./routes')(app)
 
-app.listen(process.env.PORT || 8802)
+app.listen(config.port)
